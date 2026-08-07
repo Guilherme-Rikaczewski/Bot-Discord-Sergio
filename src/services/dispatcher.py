@@ -1,10 +1,8 @@
 from src.schemas.discord import (
     DiscordInteraction,
-    DiscordInteractionResponse,
-    DiscordInteractionResponseData,
-    InteractionCallbackType
 )
 from src.services.dices import DiceService
+from src.utils.response_builder import ResponseBuilder
 
 
 class CommandDispatcher:
@@ -15,19 +13,11 @@ class CommandDispatcher:
 
     async def dispatch(self, interaction: DiscordInteraction):
         if not interaction.data:
-            return self.invalid_command_response()
+            return ResponseBuilder.message("Comando invalido.")
 
         command = interaction.data.name
 
         handler = self.handlers.get(command)
         if not handler:
-            return self.invalid_command_response()
+            return ResponseBuilder.message("Comando invalido.")
         return await handler.execute(interaction)
-
-    def invalid_command_response(self):
-        return DiscordInteractionResponse(
-            type=InteractionCallbackType.CHANNEL_MESSAGE_WITH_SOURCE,
-            data=DiscordInteractionResponseData(
-                content="Comando invalido."
-            )
-        )

@@ -22,7 +22,15 @@ headers = {
 
 data = {
     "name": "roll",
-    "description": "Faz uma rolagem de dados!"
+    "description": "Faz uma rolagem de dados!",
+    "options": [
+        {
+            "name": "dices",
+            "description": "Dados para serem rolados",
+            "type": 3,
+            "required": True
+        }
+    ]
 }
 response = requests.post(url, headers=headers, json=data)
 
